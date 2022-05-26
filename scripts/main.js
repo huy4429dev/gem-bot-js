@@ -277,8 +277,8 @@ function StartGame(gameSession, room) {
   }
 
   console.log(enemyPlayer, "enemyPlayer");
-  SEA_SPIRIT = botPlayer.heroes[1];
-  DISPATER = botPlayer.heroes[0];
+  SEA_SPIRIT = botPlayer.heroes[0];
+  DISPATER = botPlayer.heroes[1];
   CERBERUS = botPlayer.heroes[2];
   console.log(SEA_SPIRIT, "SEA_SPIRIT");
   console.log(DISPATER, "DISPATER");
@@ -399,6 +399,16 @@ function StartTurn(param) {
       return;
     }
 
+    // if(SEA_SPIRIT.isFullMana()){
+    //   castSkillSEA_SPIRIT();
+    // }
+
+
+    if (DISPATER.isFullMana()) {
+      castSkillDISPATER();
+      return;
+    }
+
     if (SEA_SPIRIT.isFullMana() && hasFIRE_SPIRIT()) {
       if (castSkillMONK()) return;
     } else if (SEA_SPIRIT.isFullMana()) {
@@ -407,15 +417,15 @@ function StartTurn(param) {
       return;
     }
 
-    if (CERBERUS.isFullMana()) {
+    if (CERBERUS.isFullMana() && (midGame || !SEA_SPIRIT.isAlive())) {
       castSkillCERBERUS();
       return;
     }
 
-    if (DISPATER.isFullMana()) {
-      castSkillDISPATER();
-      return;
-    }
+    // if (DISPATER.isFullMana() && (midGame || !SEA_SPIRIT.isAlive())) {
+    //   castSkillDISPATER();
+    //   return;
+    // }
 
     SendSwapGem();
   }, delaySwapGem);
@@ -430,6 +440,7 @@ function castSkillMONK() {
   return false;
 }
 function castSkillSEA_SPIRIT() {
+  midGame = true;
   let targetId = SEA_SPIRIT.id.toString();
   if (CERBERUS.isAlive()) {
     targetId = CERBERUS.id.toString();
@@ -452,6 +463,18 @@ function hasFIRE_SPIRIT() {
   return false;
 }
 
+function checkEndGame(){
+  // return false;
+  const heroes = enemyPlayer.heroes
+  .filter((item) => item.hp > 0);
+  if(midGame && heroes[0].hp < 16 || heroes.length < 2){
+    return true;
+  }
+  return false;
+}
+
+
+
 function castSkillDISPATER() {
   const heroes = enemyPlayer.heroes
     .filter((item) => item.hp > 0)
@@ -459,6 +482,7 @@ function castSkillDISPATER() {
 
   if (killADC(heroes, "CERBERUS")) return;
   if (killADC(heroes, "SEA_GOD")) return;
+  if (killADC(heroes, "AIR_SPIRIT")) return;
   const adCarry = heroes[0];
   SendCastSkill(DISPATER, { targetId: adCarry.id.toString() ?? null });
 }
