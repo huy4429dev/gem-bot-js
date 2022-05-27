@@ -141,17 +141,17 @@ class Grid {
 	}
 
     getMatchGemCerberus(listMatchTypes) {
-		if (!CERBERUS.isAlive()) return false;
+		if (!CERBERUS.isAlive() || CERBERUS.isFullMana()) return false;
 		return this.getIndexGem(listMatchTypes, [GemType.BLUE, GemType.BROWN]);
 	}
 
 	getMatchGemCerberusBlue(listMatchTypes) {
-		if (!CERBERUS.isAlive()) return false;
-		return this.getIndexGem(listMatchTypes, [GemType.BLUE, GemType.BROWN]);
+		if (!CERBERUS.isAlive() || CERBERUS.isFullMana()) return false;
+		return this.getIndexGem(listMatchTypes, [GemType.BLUE]);
 	}
 
 	getMatchGemDISPATER(listMatchTypes) {
-		if (!DISPATER.isAlive()) return false;
+		if (!DISPATER.isAlive() || DISPATER.isFullMana()) return false;
 		return this.getIndexGem(listMatchTypes, [GemType.RED]);
 		// return this.getIndexGem(listMatchTypes, [GemType.RED, GemType.PURPLE]);
 	}
