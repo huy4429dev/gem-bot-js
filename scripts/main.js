@@ -38,6 +38,7 @@ var SEA_SPIRIT;
 var DISPATER;
 var CERBERUS;
 var midGame = false;
+var buffTurn = 0;
 
 const username = "chinh.vuquang";
 const token =
@@ -399,23 +400,22 @@ function StartTurn(param) {
       return;
     }
 
-    // if(SEA_SPIRIT.isFullMana()){
-    //   castSkillSEA_SPIRIT();
-    // }
-
+    if(SEA_SPIRIT.isFullMana()){
+      castSkillSEA_SPIRIT();
+    }
 
     if (DISPATER.isFullMana()) {
       castSkillDISPATER();
       return;
     }
 
-    if (SEA_SPIRIT.isFullMana() && hasFIRE_SPIRIT()) {
-      if (castSkillMONK()) return;
-    } else if (SEA_SPIRIT.isFullMana()) {
-      midGame = true;
-      SendCastSkill(SEA_SPIRIT);
-      return;
-    }
+    // if (SEA_SPIRIT.isFullMana() && hasFIRE_SPIRIT()) {
+    //   if (castSkillMONK()) return;
+    // } else if (SEA_SPIRIT.isFullMana()) {
+    //   midGame = true;
+    //   SendCastSkill(SEA_SPIRIT);
+    //   return;
+    // }
 
     if (CERBERUS.isFullMana() && (midGame || !SEA_SPIRIT.isAlive())) {
       castSkillCERBERUS();
@@ -440,7 +440,11 @@ function castSkillMONK() {
   return false;
 }
 function castSkillSEA_SPIRIT() {
-  midGame = true;
+  if(buffTurn >= 2) 
+  {
+    midGame = true;
+  }
+  buffTurn ++;
   let targetId = SEA_SPIRIT.id.toString();
   if (CERBERUS.isAlive()) {
     targetId = CERBERUS.id.toString();
@@ -463,11 +467,12 @@ function hasFIRE_SPIRIT() {
   return false;
 }
 
-function checkEndGame(){
-  // return false;
-  const heroes = enemyPlayer.heroes
+function checkKillChampion(){
+  const botHeroes = enemyPlayer.heroes
   .filter((item) => item.hp > 0);
-  if(midGame && heroes[0].hp < 16 || heroes.length < 2){
+  const enemyHeroes = enemyPlayer.heroes
+  .filter((item) => item.hp > 0);
+  if(enemyHeroes[0].hp <= botHeroes[0].attack){
     return true;
   }
   return false;

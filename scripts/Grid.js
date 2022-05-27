@@ -53,7 +53,7 @@ class Grid {
 		}
 		const listMatchTypes = listMatchGem.map((item) => item.type);
 		let matchIndex = 0;
-        if(checkEndGame()){
+        if(checkKillChampion()){
             matchIndex = this.getMatchGemEndGame(listMatchTypes);
         }
 		else if (!midGame) {
@@ -94,8 +94,11 @@ class Grid {
 
 	getMatchGemStartGame(listMatchTypes) {
 		return (
-			this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
+            this.adidaphat() ||
+            this.adidaphat() ||
+            this.adidaphat() ||
 			this.getMatchGemTerraGreen(listMatchTypes).negativeOneToFalse() ||
+			this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemTerra(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemCerberus(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemEnemy(listMatchTypes).negativeOneToFalse() ||
@@ -107,19 +110,25 @@ class Grid {
 
 	getMatchGemMidGame(listMatchTypes) {
 		return (
+            this.adidaphat() ||
+            this.adidaphat() ||
+            this.adidaphat() ||
             this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemCerberus(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemTerraGreen(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemTerra(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemEnemy(listMatchTypes).negativeOneToFalse() ||
-			this.getMatchGemSWORD(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemDISPATER(listMatchTypes).negativeOneToFalse() ||
+			this.getMatchGemSWORD(listMatchTypes).negativeOneToFalse() ||
 			this.adidaphat(listMatchTypes.length - 1)
 		);
 	}
 
     getMatchGemEndGame(listMatchTypes) {
         return (
+            this.adidaphat() ||
+            this.adidaphat() ||
+            this.adidaphat() ||
 			this.getMatchGemEnemy(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemSWORD(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
@@ -152,8 +161,8 @@ class Grid {
 
 	getMatchGemDISPATER(listMatchTypes) {
 		if (!DISPATER.isAlive() || DISPATER.isFullMana()) return false;
-		return this.getIndexGem(listMatchTypes, [GemType.RED]);
-		// return this.getIndexGem(listMatchTypes, [GemType.RED, GemType.PURPLE]);
+		// return this.getIndexGem(listMatchTypes, [GemType.RED]);
+		return this.getIndexGem(listMatchTypes, [GemType.RED, GemType.PURPLE]);
 	}
 
 	getMatchGemSWORD(listMatchTypes) {
@@ -169,7 +178,12 @@ class Grid {
 	}
 
 	adidaphat(max) {
-		console.log("adidaphat");
+        console.log(`
+            Nam mô a di Đà Phật! 🙏 🙏 🙏
+            Nam mô a di Đà Phật! 🙏 🙏 🙏 
+            Nam mô a di Đà Phật! 🙏 🙏 🙏
+        `);
+        if(!max) return false;
 		return Math.floor(Math.random() * max);
 	}
 
