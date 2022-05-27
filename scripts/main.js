@@ -444,11 +444,11 @@ function castSkillMONK() {
   return false;
 }
 function castSkillSEA_SPIRIT() {
+  buffTurn ++;
   if(buffTurn >= 2) 
   {
     midGame = true;
   }
-  buffTurn ++;
   let targetId = SEA_SPIRIT.id.toString();
   if (CERBERUS.isAlive()) {
     targetId = CERBERUS.id.toString();
