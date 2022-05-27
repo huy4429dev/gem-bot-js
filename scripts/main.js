@@ -404,6 +404,12 @@ function StartTurn(param) {
       castSkillSEA_SPIRIT();
     }
 
+    if (CERBERUS.isFullMana() && (midGame || !SEA_SPIRIT.isAlive())) {
+      castSkillCERBERUS();
+      return;
+    }
+
+
     if (DISPATER.isFullMana()) {
       castSkillDISPATER();
       return;
@@ -417,11 +423,7 @@ function StartTurn(param) {
     //   return;
     // }
 
-    if (CERBERUS.isFullMana() && (midGame || !SEA_SPIRIT.isAlive())) {
-      castSkillCERBERUS();
-      return;
-    }
-
+ 
     // if (DISPATER.isFullMana() && (midGame || !SEA_SPIRIT.isAlive())) {
     //   castSkillDISPATER();
     //   return;

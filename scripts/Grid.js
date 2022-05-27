@@ -66,13 +66,13 @@ class Grid {
 
 	prioritySwapGem(listMatchGem) {
 		
-	let matchGem = listMatchGem.find(x => x.sizeMatch > 4);
-    if(matchGem) return matchGem;
-    // check GemModifier
-    const listMatchGemModifier = listMatchGem.filter(x => GemModifierPower.includes(x.modifier));
-    if(listMatchGemModifier?.length > 1){
-      return listMatchGemModifier[this.adidaphat(listMatchGemModifier.length - 1)];
-    }
+        let matchGem = listMatchGem.find(x => x.sizeMatch > 4);
+        if(matchGem) return matchGem;
+        // check GemModifier
+        const listMatchGemModifier = listMatchGem.filter(x => GemModifierPower.includes(x.modifier));
+        if(listMatchGemModifier?.length > 1){
+        return listMatchGemModifier[this.adidaphat(listMatchGemModifier.length - 1)];
+        }
 		matchGem = !midGame ? listMatchGem.find(x => x.sizeMatch > 3 && 
                                                      x.type != GemType.SWORD && 
                                                      x.type != GemType.RED && 
@@ -86,6 +86,11 @@ class Grid {
 		console.log("prioritySwapGem", matchGem);
 		return matchGem;
 	}
+
+    checkMatchGemGroup(listMatchGem){
+        
+
+    }
 
 	getMatchGemEnemy(listMatchTypes) {
 		// console.log("getMatchGemEnemy");
