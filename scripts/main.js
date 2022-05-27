@@ -259,6 +259,8 @@ function OnExtensionResponse(event) {
 
 function StartGame(gameSession, room) {
   console.log("START GAME --");
+  midGame = false;
+  buffTurn = 0;
   // Assign Bot player & enemy player
   AssignPlayers(room);
 
