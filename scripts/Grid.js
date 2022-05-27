@@ -67,6 +67,7 @@ class Grid {
 	prioritySwapGem(listMatchGem) {
 		
 	let matchGem = listMatchGem.find(x => x.sizeMatch > 4);
+    if(matchGem) return matchGem;
     // check GemModifier
     const listMatchGemModifier = listMatchGem.filter(x => GemModifierPower.includes(x.modifier));
     if(listMatchGemModifier?.length > 1){
