@@ -445,7 +445,7 @@ function castSkillMONK() {
 }
 function castSkillSEA_SPIRIT() {
   buffTurn ++;
-  if(buffTurn >= 2) 
+  if(buffTurn >= 1) 
   {
     midGame = true;
   }
