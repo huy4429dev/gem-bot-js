@@ -10,8 +10,7 @@ function union (sets) {
     return sets.reduce((combined, list) => {
       return new Set([...combined, ...list]);
     }, new Set());
-  }
-
+}
 class GridDistinction {
     removedGems = [];
     matchesSize = [];
@@ -22,7 +21,6 @@ class Grid {
 		this.gemeCode = gemsCode;
 		this.gemTypes = new Set();
 		this.updateGems(gemsCode, gemModifiers);
-		
         this.myHeroGemType = gemTypes;
 	}
 
@@ -30,27 +28,29 @@ class Grid {
 		this.gems = [];
 		this.gemeCode = gemsCode;
 		this.gemTypes = new Set();
-
         for (let i = 0; i < gemsCode.size(); i++) {
             let gem = new Gem(i, gemsCode.getByte(i), gemModifiers != null ? gemModifiers.getByte(i) : GemModifier.NONE);
 			this.gems.push(gem);
-
 			this.gemTypes.add(gem.type);
-
-			// console.log(i + ": " + gem.type)
 		}
 	}
 
 	recommendSwapGem() {
+        
 		let listMatchGem = this.suggestMatch();
-        console.log(listMatchGem,'listMatchGem')
+
 		if (listMatchGem.length === 0) {
 			return [-1, -1];
 		}
+
+        this.adidaphat();
+        this.adidaphat();
+        this.adidaphat();
+
 		const matchGem = this.prioritySwapGem(listMatchGem);
-		if (matchGem) {
-			return matchGem.getIndexSwapGem();
-		}
+
+		if (matchGem) return matchGem.getIndexSwapGem();
+        
 		const listMatchTypes = listMatchGem.map((item) => item.type);
 		let matchIndex = 0;
         if(checkKillChampion()){
@@ -58,25 +58,26 @@ class Grid {
         }
 		else if (!midGame) {
 			matchIndex = this.getMatchGemStartGame(listMatchTypes);
-		} else if (midGame) {
+		} 
+        else{
 			matchIndex = this.getMatchGemMidGame(listMatchTypes);
 		}
 		return listMatchGem[matchIndex].getIndexSwapGem();
 	}
 
 	prioritySwapGem(listMatchGem) {
-		
-        let matchGem = listMatchGem.find(x => x.sizeMatch > 4);
-        if(matchGem) return matchGem;
-        // check GemModifier
+        let matchGem = listMatchGem.find(x => x.sizeMatch > 4); if(matchGem) return matchGem;;
         const listMatchGemModifier = listMatchGem.filter(x => GemModifierPower.includes(x.modifier));
         if(listMatchGemModifier?.length > 1){
         return listMatchGemModifier[this.adidaphat(listMatchGemModifier.length - 1)];
         }
+        matchGem =  this.checkMatchGemGroup(listMatchGem);
+        if(matchGem) return;
 		matchGem = !midGame ? listMatchGem.find(x => x.sizeMatch > 3 && 
                                                      x.type != GemType.SWORD && 
                                                      x.type != GemType.RED && 
-                                                     x.type != GemType.PURPLE) : false;
+                                                     x.type != GemType.PURPLE
+                                                ) : false;
 		matchGem = matchGem ||listMatchGem.find(x => midGame &&	
                                                      x.sizeMatch > 3 && 
                                                      x.type != GemType.GREEN && 
@@ -88,20 +89,95 @@ class Grid {
 	}
 
     checkMatchGemGroup(listMatchGem){
-        
 
+        listMatchGem.forEach(item => {
+            const temp =  listMatchGem.find(x => item.index1 == x.index2 && item.index2 == x.index1);
+            if(temp)
+            item.type2 = temp.type;    
+        })
+
+        let any = listMatchGem.some(item => item.type2);
+        if(!any) return false;
+
+        console.log("checkMatchGemGroup",console.log(listMatchGem))
+
+        // handle get gem optimize
+        if(!midGame){
+        for (const item of listMatchGem) {
+            if(item.type == GemType.GREEN ||
+               item.type == GemType.YELLOW &&
+               item.type2 == GemType.GREEN ||
+               item.type2 == GemType.YELLOW 
+               ){
+                   console.log(item,'itemMatchGroup')
+                return item;
+              }
+          }
+        }
+
+        if(!midGame){
+            for (const item of listMatchGem) {
+                    if(
+                       (!CERBERUS.isFullMana() && CERBERUS.isAlive() && (item.type == GemType.BLUE || item.type == GemType.BROWN)) &&
+                       ((item.type2 == GemType.BLUE || item.type2 == GemType.BROWN)) 
+                       ){
+                           console.log(item,'itemMatchGroup')
+                        return item;
+                      }
+                }
+            }
+
+        if(!midGame){
+            for (const item of listMatchGem) {
+                    if(
+                       (DISPATER.isAlive() && (item.type == GemType.RED || item.type == GemType.PURPLE)) &&
+                       ((item.type2 == GemType.RED || item.type2 == GemType.PURPLE)) 
+                       ){
+                           console.log(item,'itemMatchGroup')
+                        return item;
+                      }
+                }
+        }
+    
+
+        if(midGame){
+        for (const item of listMatchGem) {
+                if(
+                   (CERBERUS.isAlive() && (item.type == GemType.BLUE || item.type == GemType.BROWN)) &&
+                   ( (item.type2 == GemType.BLUE || item.type2 == GemType.BROWN)) 
+                   ){
+                       console.log(item,'itemMatchGroup')
+                    return item;
+                  }
+            }
+        }
+
+        if(midGame){
+            for (const item of listMatchGem) {
+                    if(
+                       (DISPATER.isAlive() && (item.type == GemType.RED || item.type == GemType.PURPLE)) &&
+                       ((item.type2 == GemType.RED || item.type2 == GemType.PURPLE)) 
+                       ){
+                           console.log(item,'itemMatchGroup')
+                        return item;
+                      }
+                }
+        }
+        return false;   
+
+        // GREEN - BLUE 
+
+        // GREEN - BROWN 
+
+        // RED - PURPLE
     }
 
 	getMatchGemEnemy(listMatchTypes) {
-		// console.log("getMatchGemEnemy");
 		return false;
 	}
 
 	getMatchGemStartGame(listMatchTypes) {
 		return (
-            this.adidaphat() ||
-            this.adidaphat() ||
-            this.adidaphat() ||
 			this.getMatchGemTerraGreen(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemTerra(listMatchTypes).negativeOneToFalse() ||
@@ -115,9 +191,6 @@ class Grid {
 
 	getMatchGemMidGame(listMatchTypes) {
 		return (
-            this.adidaphat() ||
-            this.adidaphat() ||
-            this.adidaphat() ||
             this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
 			this.getMatchGemCerberus(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemTerraGreen(listMatchTypes).negativeOneToFalse() ||
@@ -131,9 +204,6 @@ class Grid {
 
     getMatchGemEndGame(listMatchTypes) {
         return (
-            this.adidaphat() ||
-            this.adidaphat() ||
-            this.adidaphat() ||
 			this.getMatchGemEnemy(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemSWORD(listMatchTypes).negativeOneToFalse() ||
             this.getMatchGemCerberusBlue(listMatchTypes).negativeOneToFalse() ||
@@ -166,7 +236,6 @@ class Grid {
 
 	getMatchGemDISPATER(listMatchTypes) {
 		if (!DISPATER.isAlive() || DISPATER.isFullMana()) return false;
-		// return this.getIndexGem(listMatchTypes, [GemType.RED]);
 		return this.getIndexGem(listMatchTypes, [GemType.RED, GemType.PURPLE]);
 	}
 

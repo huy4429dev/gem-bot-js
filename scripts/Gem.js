@@ -22,7 +22,7 @@ const GemModifier = {
 }
 
 
-const GemModifierPower = [1,5,8];
+const GemModifierPower = [5,8,7,6,3,2,1];
 
 const GemColor = {
     '-1': 'gray',
