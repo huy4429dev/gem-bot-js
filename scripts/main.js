@@ -546,7 +546,7 @@ function SendCastSkill(heroCastSkill, { targetId, selectedGem, gemIndex, isTarge
 
 }
 
-function SendSwapGem() {
+function SendSwapGem(swap) {
 	let indexSwap = grid.recommendSwapGem();
 
 	log("sendExtensionRequest()|room:" + room.Name + "|extCmd:" + SWAP_GEM + "|index1: " + indexSwap[0] + " index2: " + indexSwap[1]);
@@ -596,7 +596,7 @@ function HandleGems(paramz) {
 
 	grid.updateGems(gemCode, gemModifiers);
 
-	// setTimeout(function () { SendFinishTurn(false) }, delaySwapGem);
+	setTimeout(function () { SendFinishTurn(false) }, delaySwapGem);
 }
 
 function HandleHeroes(paramz) {

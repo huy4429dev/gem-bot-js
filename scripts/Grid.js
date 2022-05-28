@@ -65,6 +65,7 @@ class Grid {
 
         if(!matchIndex || !listMatchGem[matchIndex]) {
             matchIndex = 0;
+            console.log("ERRRRRRORRRRRRR")
         }
 		return listMatchGem[matchIndex].getIndexSwapGem();
 	}
@@ -91,7 +92,7 @@ class Grid {
                                                      x.type != GemType.YELLOW && 
                                                      x.type != GemType.RED && 
                                                      x.type != GemType.PURPLE);
-		console.log("prioritySwapGem", matchGem);
+		console.log("prioritySwapGem -----------------", matchGem);
 		return matchGem;
 	}
 
