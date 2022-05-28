@@ -62,6 +62,10 @@ class Grid {
         else{
 			matchIndex = this.getMatchGemMidGame(listMatchTypes);
 		}
+
+        if(!matchIndex || !listMatchGem[matchIndex]) {
+            matchIndex = 0;
+        }
 		return listMatchGem[matchIndex].getIndexSwapGem();
 	}
 
